@@ -9,6 +9,8 @@ sys.path.insert(0, str(repo_root))
 from apps.backend.core.block import Block
 from apps.backend.core.block_header import BlockHeader
 from apps.backend.helpers.utils import hash256
+from apps.backend.database.database import Database
+
 
 ZERO_HASH = '0' * 64
 VERSION = 1
@@ -23,8 +25,27 @@ class Blockchain:
         Initialize the blockchain.
         """
         self.difficulty = 4
-        self.chain = []
         self.create_genesis_block()
+
+
+    def write_chain(self, block):
+        """
+        Write the blockchain to the database.
+
+        :param block: The block to write.
+        """
+        db = Database()
+        db.write(block)
+
+
+    def get_last_block(self):
+        """
+        Get the last block from the database.
+
+        :return: The last block from the database.
+        """
+        db = Database()
+        return db.get_last_block()
 
 
     def create_genesis_block(self):
@@ -52,7 +73,7 @@ class Blockchain:
         block_size = 1
         tx_count = 1
         block = Block(block_height, block_size, block_header, tx_count, transaction)
-        self.chain.append(block.to_dict())
+        self.write_chain(block.to_dict())
 
 
     def main(self):
@@ -60,11 +81,10 @@ class Blockchain:
         Run the blockchain.
         """
         while True:
-            last_block = self.chain[-1]
+            last_block = self.get_last_block()
             block_height = last_block["height"] + 1
             prev_block_hash = last_block["block_header"]["block_hash"]
             self.add_block(block_height, prev_block_hash)
-            print(json.dumps(self.chain[-1], indent=4))
 
 
 if __name__ == '__main__':
