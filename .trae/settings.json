@@ -1,0 +1,16 @@
+{
+    "python.defaultInterpreterPath": "/Users/mkafonso/Desktop/blockchain/.venv/bin/python3",
+    "python.terminal.activateEnvironment": true,
+    "terminal.integrated.defaultProfile.osx": "zsh (workspace venv)",
+    "terminal.integrated.profiles.osx": {
+        "zsh (workspace venv)": {
+            "path": "/bin/zsh",
+            "args": [
+                "-l"
+            ],
+            "env": {
+                "ZDOTDIR": "/Users/mkafonso/Desktop/blockchain/.trae/zsh"
+            }
+        }
+    }
+}
