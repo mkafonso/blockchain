@@ -1,5 +1,6 @@
 import time
 import sys
+import json
 from pathlib import Path
 
 repo_root = Path(__file__).resolve().parents[3]
@@ -51,9 +52,21 @@ class Blockchain:
         block_size = 1
         tx_count = 1
         block = Block(block_height, block_size, block_header, tx_count, transaction)
-        self.chain.append(block)
+        self.chain.append(block.to_dict())
+
+
+    def main(self):
+        """
+        Run the blockchain.
+        """
+        while True:
+            last_block = self.chain[-1]
+            block_height = last_block["height"] + 1
+            prev_block_hash = last_block["block_header"]["block_hash"]
+            self.add_block(block_height, prev_block_hash)
+            print(json.dumps(self.chain[-1], indent=4))
 
 
 if __name__ == '__main__':
     blockchain = Blockchain()
-    print(blockchain.chain[0].__dict__)
+    blockchain.main()

@@ -18,3 +18,13 @@ class Block:
         self.block_header = block_header
         self.tx_count = tx_count
         self.txs = txs
+
+
+    def to_dict(self):
+        return {
+            "height": self.height,
+            "block_size": self.block_size,
+            "block_header": self.block_header.to_dict() if self.block_header else None,
+            "tx_count": self.tx_count,
+            "txs": self.txs,
+        }

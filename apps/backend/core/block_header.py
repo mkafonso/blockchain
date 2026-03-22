@@ -34,6 +34,7 @@ class BlockHeader:
         while self.block_hash[:difficulty] != '0' * difficulty:
             self.block_hash = hash256(self.serialize())
             self.nonce += 1
+            print(f"Mining Started {self.nonce}", end="\r")
 
 
     def serialize(self):
@@ -43,3 +44,15 @@ class BlockHeader:
         :return: The serialized block header.
         """
         return f"{self.version}{self.prev_block_hash}{self.merkle_root}{self.timestamp}{self.bits}{self.nonce}"
+
+
+    def to_dict(self):
+        return {
+            "version": self.version,
+            "prev_block_hash": self.prev_block_hash,
+            "merkle_root": self.merkle_root,
+            "timestamp": self.timestamp,
+            "bits": self.bits,
+            "nonce": self.nonce,
+            "block_hash": self.block_hash,
+        }
