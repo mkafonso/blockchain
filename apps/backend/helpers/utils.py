@@ -1,6 +1,7 @@
 import hashlib
 from Crypto.Hash import RIPEMD160
 from hashlib import sha256
+from math import log
 
 def hash256(data):
     """
@@ -27,3 +28,26 @@ def hash160(data):
     :return: The hash digest bytes.
     """
     return RIPEMD160.new(sha256(data).digest()).digest()
+
+
+def int_to_little_endian(n, length):
+    """
+    Convert an integer to a little-endian byte string.
+
+    :param n: The integer to convert.
+    :param length: The length of the byte string.
+    :return: The little-endian byte string.
+    """
+    return n.to_bytes(length, byteorder="little")
+
+
+def bytes_needed_for_little_endian(n):
+    """
+    Calculate the number of bytes needed to represent an integer in little-endian format.
+
+    :param n: The integer to convert.
+    :return: The number of bytes needed.
+    """
+    if n == 0:
+        return 1
+    return int(log(n, 256)) + 1
